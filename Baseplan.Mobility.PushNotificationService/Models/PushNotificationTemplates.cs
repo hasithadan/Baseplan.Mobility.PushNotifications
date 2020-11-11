@@ -9,7 +9,7 @@ namespace Baseplan.Mobility.PushNotificationService.Models
     {
         public class Generic
         {
-            public const string Android = "{ \"notification\": { \"title\" : \"PushDemo\", \"body\" : \"$(alertMessage)\"}, \"data\" : { \"action\" : \"$(alertAction)\" } }";
+            public const string Android = "{ \"notification\": { \"title\" : \"Baseplan Mobility\", \"body\" : \"$(alertMessage)\"}, \"data\" : { \"action\" : \"$(alertAction)\" } }";
             public const string iOS = "{ \"aps\" : {\"alert\" : \"$(alertMessage)\"}, \"action\" : \"$(alertAction)\" }";
         }
 
