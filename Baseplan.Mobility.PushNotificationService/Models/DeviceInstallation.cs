@@ -17,6 +17,9 @@ namespace Baseplan.Mobility.PushNotificationService.Models
         [Required]
         public string PushChannel { get; set; }
 
+        [Required]
+        public string UserId { get; set; }
+
         public IList<string> Tags { get; set; } = Array.Empty<string>();
     }
 }

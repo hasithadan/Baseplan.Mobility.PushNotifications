@@ -34,14 +34,16 @@ namespace Baseplan.Mobility.PushNotificationService.Services
         {
             if (string.IsNullOrWhiteSpace(deviceInstallation?.InstallationId) ||
                 string.IsNullOrWhiteSpace(deviceInstallation?.Platform) ||
-                string.IsNullOrWhiteSpace(deviceInstallation?.PushChannel))
+                string.IsNullOrWhiteSpace(deviceInstallation?.PushChannel) ||
+                string.IsNullOrWhiteSpace(deviceInstallation?.UserId))
                 return false;
 
             var installation = new Installation()
             {
                 InstallationId = deviceInstallation.InstallationId,
                 PushChannel = deviceInstallation.PushChannel,
-                Tags = deviceInstallation.Tags
+                Tags = deviceInstallation.Tags,
+                UserId = deviceInstallation.UserId
             };
 
             if (_installationPlatform.TryGetValue(deviceInstallation.Platform, out var platform))
@@ -52,9 +54,11 @@ namespace Baseplan.Mobility.PushNotificationService.Services
             try
             {
                 await _hub.CreateOrUpdateInstallationAsync(installation, token);
+                _logger.LogInformation($"Device Id {installation.InstallationId} User Id {installation.UserId} registered");
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Unexpected error device installation");
                 return false;
             }
 
@@ -69,9 +73,11 @@ namespace Baseplan.Mobility.PushNotificationService.Services
             try
             {
                 await _hub.DeleteInstallationAsync(installationId, token);
+                _logger.LogInformation($"Device Id {installationId} unregistered");
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Unexpected error device installation deletion");
                 return false;
             }
 
